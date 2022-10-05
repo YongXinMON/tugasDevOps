@@ -98,7 +98,7 @@ import 'package:provider/provider.dart';
 import 'Provider/myProvider.dart';
 
 class Screen extends StatefulWidget {
-  const Screen({Key? key}) : super(ket: key);
+  const Screen({Key? key}) : super(key: key);
   
   @override
   State<Screen> createState() => _ScreenState();
@@ -252,7 +252,7 @@ class ShoppingListDialog {
 }
 ```
 shopping_list_dialog.dart merupakan custom wiget yang anda dapat bangun untuk memudahkan anda dalam melakukan pengimputan data melalui dialog.
-### Hasil:
+### HASIL :
 
 
 
@@ -397,4 +397,108 @@ class ShoppingListDialog {
     if(_database != null) {
       final List<Map<String, dynamic>> maps =
           await _database!.query('shopping_list');
-      print("Isi DB"
+      print("Isi DB" + maps.toString());
+      return List.generate(maps.length, (i) {
+        return ShoppingList(maps[i]['id'], maps[i]['name], maps[i]['sum]);
+      });
+    }
+    return [];
+  }
+```
+2. Pada screen.dart, anda dapat menghubungkan provider dengan fungsi getMyShoppingList() database, sehingga setiap kali terjadi perubahan data, provider dapat langsung menampilkan hasilnya pada screen anda.
+```
+                  trailing: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ShoppingListDialog(_dbHelper).buildDialog(
+                                  context, tmp.getShoppingListp[index], false);
+                            });
+                        _dbHelper
+                            .getmyShoppingList()
+                            .then((value) => tmp.setShoppingList = value);
+                      }),
+                ));
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await showDialog(
+              context: context,
+              builder: (context) {
+                return ShoppingListDialog(_dbHelper)
+                    .buildDialog(context, ShoppingList(++id, "", 0), true);
+              )};
+          _dbHelper
+              .getmyShoppingList()
+              .then((value) => tmp.setShoppingList = value);
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+```
+3. Tambahkan pula pembagian fungsi ini pada saat pertama kali widget di build, sehingga data akan langsung ditampilkan kepada anda, setiap kali aplikasi dibuka.
+```
+class _ScreenState extends State<Screen> {
+  int id = 0;
+  DBHelper _dbHelper = DBHelper();
+  @override
+  Widget build(BuildContext context) {
+    var tmp = Provider.of<ListProductProvider>(context, listen: true);
+    _dbHelper.getmyShoppingList().then((value) => tmp.setShoppingList = value);
+    return Scaffold(
+```
+### HASIL :
+Saat ini, anda telah berhasil menjalankan perintah untuk melakukan operasi di dalam database baca dan tulis. Anda dapat melihat data anda akan tersimpan secara permanen di dalam aplikasi anda, walapupn anda telah menutup aplikasi dan membukanya kembali.
+
+
+# Delete Data
+1. Pada dbhelper.dart, tambahkan sebuah fungsi untuk melakukan penghapusan data dari database.
+```
+  Future<void> deleteShoppingList(int id) async {
+    await _database?.delete(
+      'shopping_list',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+```
+2. Data akan dihapus ketika disapu ke kanan atau kiri dari layar aplikasi. Pada screen.dart di bagian onDissmissed tambahkan perintah berikut untuk menghapus data dari database ketika aksi ini dilakukan.
+```
+                  onDismissed: (direction) {
+                    String tmpName = tmp.getShoppingList[index].name;
+                    int tmpId = tmp.getShoppingList[index].id;
+                    setState(() {
+                      tmp.deleteById(tmp.getShoppingList[index]);
+                    });
+                    _dbHelper.deleteShoppingList(tmpId);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(""$tmpName deleted"),
+                    ));
+                  },
+```
+# Close Database
+3. Pada dbhelper.dart, tambahkan sebuah fungsi untuk menutup koneksi ke dalam database.
+```
+  Future<void> closeDB() async {
+    await _database?.close();
+  }
+```
+4. Pastikan anda menambahkan proses untuk menutup database ketika aplikasi selesai dilakukan dengan cara menambahkan fungsi closeDB() pada lifecycle dispose() aplikasi anda.
+```
+  @override
+  void dispose() {
+    _dbHelper.closeDB();
+    super.dispose();
+  }
+```
+# Latihan
+1. Pada contoh diatas, masih terdapat kelemahan, dimana setiap aplikasi dibuka kembali, pengimputan data akan dimulai kembali dari urutan pertama. Ini disebabkan oleh id tidak tersimpan secara permanen. Lakukan penyimpanan sharedPreference atau pembacaan id terakhir untuk menangani masalah tersebut.
+![image](https://user-images.githubusercontent.com/107875899/193972709-745761e9-f6c1-4ba6-b8b9-c257015c7319.png)
+
+2. Tambahkan proses untuk menghapus seluruh isi table database, ketika action pada appBar di klik.
+![image](https://user-images.githubusercontent.com/107875899/193972800-9947689c-2065-40e8-8154-a904e3c6540e.png)
+
+3. Tambahkan sebuah aktifitas berupa history, dimana setiap kali penghapusan di lakukan, akan tersimpan dalam aktifitas history, termasuk dengan tanggal dan jam dilakukannya penghapusan data.
