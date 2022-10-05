@@ -154,7 +154,7 @@ class _ScreenState extends State<Screen> {
                       context: context,
                       builder: (context) {
                         return ShoppingListDialog()
-                            .buildDialog(context, ShoppingList(++id, "", 0), true);
+                            .buildDialog(context, tmp.getShoppingList[index], false);
                       });
                   }),
              ));
@@ -280,7 +280,7 @@ class DBHelper {
     // await deleteDatabase(
     //     join(await getDatabasePath(), 'shopinglist_database.db'));
     _database ??= await openDatabase(
-      join(await getDabasesPath(), _db_name),
+      join(await getDatabasesPath(), _db_name),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE $_table_name (id INTEGER PRIMARY KEY, name TEXT, sum INTEGER)',
@@ -404,7 +404,7 @@ class ShoppingListDialog {
           await _database!.query('shopping_list');
       print("Isi DB" + maps.toString());
       return List.generate(maps.length, (i) {
-        return ShoppingList(maps[i]['id'], maps[i]['name], maps[i]['sum]);
+        return ShoppingList(maps[i]['id'], maps[i]['name'], maps[i]['sum']);
       });
     }
     return [];
@@ -448,6 +448,8 @@ class ShoppingListDialog {
   }
 ```
 3. Tambahkan pula pembagian fungsi ini pada saat pertama kali widget di build, sehingga data akan langsung ditampilkan kepada anda, setiap kali aplikasi dibuka.
+![image](https://user-images.githubusercontent.com/107875899/193978058-6d4eb2bb-10e1-4747-91c1-898df95f566b.png)
+
 ```
 class _ScreenState extends State<Screen> {
   int id = 0;
@@ -455,11 +457,14 @@ class _ScreenState extends State<Screen> {
   @override
   Widget build(BuildContext context) {
     var tmp = Provider.of<ListProductProvider>(context, listen: true);
-    _dbHelper.getmyShoppingList().then((value) => tmp.setShoppingList = value);
+    _dbHelper.getmyShopingList().then((value) => tmp.setShoppingList = value);
     return Scaffold(
 ```
 ### HASIL :
 Saat ini, anda telah berhasil menjalankan perintah untuk melakukan operasi di dalam database baca dan tulis. Anda dapat melihat data anda akan tersimpan secara permanen di dalam aplikasi anda, walapupn anda telah menutup aplikasi dan membukanya kembali.
+![image](https://user-images.githubusercontent.com/107875899/193980204-df6773f4-b713-420a-9b67-86a4f2ba8e7e.png)
+![image](https://user-images.githubusercontent.com/107875899/193980270-3d6b3bbd-3f71-45a0-a7f2-ea2c14df3764.png)
+![image](https://user-images.githubusercontent.com/107875899/193980326-6de21bd7-7ffb-4353-88be-4235196147bb.png)
 
 
 # Delete Data
@@ -474,6 +479,8 @@ Saat ini, anda telah berhasil menjalankan perintah untuk melakukan operasi di da
   }
 ```
 2. Data akan dihapus ketika disapu ke kanan atau kiri dari layar aplikasi. Pada screen.dart di bagian onDissmissed tambahkan perintah berikut untuk menghapus data dari database ketika aksi ini dilakukan.
+![image](https://user-images.githubusercontent.com/107875899/193980454-9ade122e-1268-4ad8-8f36-076933e7c620.png)
+
 ```
                   onDismissed: (direction) {
                     String tmpName = tmp.getShoppingList[index].name;
