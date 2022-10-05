@@ -366,6 +366,8 @@ class ShoppingListDialog {
 }
 ```
 3. Sebelum dapat menjalankan perintah insert ini, pastikan anda mengubah pemanggilan fungsi ShoppingListDialog() pada screen.dart menjad ShoppingListDialog(_dbHelper).
+![image](https://user-images.githubusercontent.com/107875899/193977124-27eaee56-ee94-42d2-9bce-b28ab5116277.png)
+
 ```
                   trailing: IconButton(
                       icon: Icon(Icons.edit),
