@@ -261,7 +261,7 @@ Hasilnya, data belum dapat kita tampilkan pada tampilan front-end. Untuk itu kit
 # Creating Database
 1. Buat sebuah file dart baru bernama **dbhelper.dart**. File ini akan kita gunakan untuk menyimpan setiap perintah yang berkaitan dengan database. Di dalam file ini buat sebuah class baru bernama **DbHelper**. Pada proses pertama dalam operasi database Sqlite, anda diwajibkan untuk melakkan inisialisasi dan membuka database. Adapun insialisasi dan membuka database dapat menggunakan fungsi **openDatabase()**. Pada saat proses openDatabase() anda dapat mentriger sebuah event **onCreate()** untuk membentuk table yang terhubung dengan database anda. Atau anda dapat mecreate tabel secara terpisah.
 ```
-import 'package:path/path.dart':
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
@@ -306,11 +306,14 @@ class _ScreenState extends State<Screen> {
     await _database?.insert(
       'shopping_list',
       tmp.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replacem
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 ```
 2. Pada file shopping_list_dialog.dart, tambahkan perintah untuk menambahkan data ke dalam database pada widget Elevated Button dengna menggunakan helper database. Pastikan anda memberikan akses database pada kelas shopping_list_dialog, melalui constructor sehingga shopping_list_dialog.dart dituliskan sebagai berikut.
+![image](https://user-images.githubusercontent.com/107875899/193976780-edb387df-2f99-46a4-8fc6-749d3d76c686.png)
+![image](https://user-images.githubusercontent.com/107875899/193976820-1102934d-3142-4915-a15a-ad4bc7d214bf.png)
+
 ```
 import 'package:flutter/material.dart';
 import 'package:my_sql_db/PraktekM03/DB/dbHelper.dart';
