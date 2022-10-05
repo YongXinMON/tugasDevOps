@@ -411,6 +411,9 @@ class ShoppingListDialog {
   }
 ```
 2. Pada screen.dart, anda dapat menghubungkan provider dengan fungsi getMyShoppingList() database, sehingga setiap kali terjadi perubahan data, provider dapat langsung menampilkan hasilnya pada screen anda.
+![image](https://user-images.githubusercontent.com/107875899/193977860-7d2d5f16-b9fb-4a76-836d-b953d11f0afe.png)
+![image](https://user-images.githubusercontent.com/107875899/193977889-3a490012-c7fd-4b35-909d-5e329a907d57.png)
+
 ```
                   trailing: IconButton(
                       icon: Icon(Icons.edit),
@@ -422,7 +425,7 @@ class ShoppingListDialog {
                                   context, tmp.getShoppingListp[index], false);
                             });
                         _dbHelper
-                            .getmyShoppingList()
+                            .getmyShopingList()
                             .then((value) => tmp.setShoppingList = value);
                       }),
                 ));
@@ -436,7 +439,7 @@ class ShoppingListDialog {
                     .buildDialog(context, ShoppingList(++id, "", 0), true);
               )};
           _dbHelper
-              .getmyShoppingList()
+              .getmyShopingList()
               .then((value) => tmp.setShoppingList = value);
         },
         child: Icon(Icons.add),
