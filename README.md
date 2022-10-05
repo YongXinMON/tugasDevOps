@@ -72,10 +72,10 @@ class MyAppp extends StatelessWidget {
   //This widget is the root of your aplication.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(),
+    return ChangeNotifierProvider(
       create: (context) => ListProductProvider(),
       child: MaterialApp(
-        title: 'Flutter Demo';
+        title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -95,7 +95,7 @@ import 'package:my_sql_db/PraktekM03/ItemsScreen.dart';
 import 'package:my_sql_db/PraktekM03/model/ShoppingList.dart';
 import 'package:my_sql_db/PraktekM03/ui/shopping_list_dialog.dart';
 import 'package:provider/provider.dart';
-import 'Provider/myProvider.dart';
+import 'Provider/MyProvider.dart';
 
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
@@ -110,7 +110,7 @@ class _ScreenState extends State<Screen> {
   Widget build(BuildContext context) {
     var tmp = Provider.of<ListProductProvider>(context, listen: true);
     return Scaffold(
-      appbar: AppBar(
+      appBar: AppBar(
         title: const Text("Shopping List"),
         actions: <Widget>[
           IconButton(
@@ -134,12 +134,12 @@ class _ScreenState extends State<Screen> {
               });
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("$tmpName deleted"),
-              }};
+              ));
             },
             child: ListTile(
               title: Text(tmp.getShoppingList[index].name),
               leading: CircleAvatar(
-                child: Text("${tmp.getShoppingList[index]sum}"),
+                child: Text("${tmp.getShoppingList[index].sum}"),
               ),
               onTap: () {
                 Navigator.push(context,
@@ -229,7 +229,7 @@ class ShoppingListDialog {
           child: Column(children: <Widget>[
             TextField(
                 controller: txtName,
-                decoration: InputDecoration(hinText: 'Shopping List Name')),
+                decoration: InputDecoration(hintText: 'Shopping List Name')),
             TextField(
               controller: txtSum,
               keyboardType: TextInputType.number,
@@ -241,7 +241,7 @@ class ShoppingListDialog {
                 child: Text('Save Shopping List'),
                 onPressed: () {
                   list.name = txtName.text != "" ? txtName.text : "Empty";
-                  list.sum = txtSum.text != "" ? int.parse(txtSum.text) : 0:
+                  list.sum = txtSum.text != "" ? int.parse(txtSum.text) : 0;
                   Navigator.pop(context);
                 },
               ),
@@ -253,8 +253,8 @@ class ShoppingListDialog {
 ```
 shopping_list_dialog.dart merupakan custom wiget yang anda dapat bangun untuk memudahkan anda dalam melakukan pengimputan data melalui dialog.
 ### HASIL :
-
-
+![image](https://user-images.githubusercontent.com/107875899/193975740-6a9fdd73-9acb-4848-98d1-01d2997f6260.png)
+![image](https://user-images.githubusercontent.com/107875899/193975809-07051520-3c6e-41bb-a5be-1ff3ab065aa8.png)
 
 Hasilnya, data belum dapat kita tampilkan pada tampilan front-end. Untuk itu kita akan mencoba menggunakan Sq(F)Lite untuk memproses data sehingga data dapat tersimpan secara permanen dan dapat diakses kembali meskipun aplikasi telah ditutup.
 
