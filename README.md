@@ -1,4 +1,4 @@
-# Praktek-M03
+# Pengembangan Dan Operasi 
 
 Pada contoh ini, kita akan mencoba menyertakan Sq(F)Lite dalam poryek kita. Jadi, di file pubspec.yaml/pubspec assist Anda, tambahkan dependensi, sebagai berikut :
 ```
