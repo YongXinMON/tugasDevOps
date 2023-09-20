@@ -509,11 +509,3 @@ Saat ini, anda telah berhasil menjalankan perintah untuk melakukan operasi di da
     super.dispose();
   }
 ```
-# Latihan
-1. Pada contoh diatas, masih terdapat kelemahan, dimana setiap aplikasi dibuka kembali, pengimputan data akan dimulai kembali dari urutan pertama. Ini disebabkan oleh id tidak tersimpan secara permanen. Lakukan penyimpanan sharedPreference atau pembacaan id terakhir untuk menangani masalah tersebut.
-![image](https://user-images.githubusercontent.com/107875899/193972709-745761e9-f6c1-4ba6-b8b9-c257015c7319.png)
-
-2. Tambahkan proses untuk menghapus seluruh isi table database, ketika action pada appBar di klik.
-![image](https://user-images.githubusercontent.com/107875899/193972800-9947689c-2065-40e8-8154-a904e3c6540e.png)
-
-3. Tambahkan sebuah aktifitas berupa history, dimana setiap kali penghapusan di lakukan, akan tersimpan dalam aktifitas history, termasuk dengan tanggal dan jam dilakukannya penghapusan data.
